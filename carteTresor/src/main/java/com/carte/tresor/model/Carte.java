@@ -8,8 +8,15 @@ public class Carte {
 	private int hauteur;
 
 	public Carte(int largeur, int hauteur) {
-		// Initialisation de la carte avec des plaines
-	}
+        this.largeur = largeur;
+        this.hauteur = hauteur;
+        grille = new Case[hauteur][largeur];
+        for (int y = 0; y < hauteur; y++) {
+            for (int x = 0; x < largeur; x++) {
+                grille[y][x] = new Case(); // Initialiser toutes les cases comme des plaines
+            }
+        }
+    }
 
 	public Case[][] getGrille() {
 		return grille;
@@ -36,12 +43,22 @@ public class Carte {
 	}
 
 	public void ajouterMontagne(int x, int y) {
-		// TODO Auto-generated method stub
-		
+	    if (x >= 0 && x < largeur && y >= 0 && y < hauteur) {
+	        grille[y][x].setType(TypeCase.MONTAGNE);
+	    } else {
+	        // Gérer le cas où les coordonnées sont hors limites
+	        // Par exemple, enregistrer un message d'erreur ou lancer une exception
+	    }
 	}
 
+
 	public void ajouterTresor(int x, int y, int nbTresors) {
-		// TODO Auto-generated method stub
+	    if (x >= 0 && x < largeur && y >= 0 && y < hauteur) {
+	        grille[y][x].setType(TypeCase.TRESOR);
+	        grille[y][x].setTresors(nbTresors);
+	    } else {
+	        // Gérer le cas où les coordonnées sont hors limites
+	    }
 	}
 
 	// Méthode pour afficher la carte...
