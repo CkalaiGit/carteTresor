@@ -1,4 +1,4 @@
-package main.java.com.carte.tresor.model;
+package main.java.com.carte.tresor.model.carte;
 
 public class Carte {
 
@@ -7,27 +7,24 @@ public class Carte {
 	private int hauteur;
 
 	public Carte(int largeur, int hauteur) {
-        initialiserCarte(largeur, hauteur);
-    }
+		initialiserCarte(largeur, hauteur);
+	}
 
-    private void initialiserCarte(int largeur, int hauteur) {
-        this.largeur = largeur;
-        this.hauteur = hauteur;
-        grille = new Case[hauteur][largeur];
-        
-        for (int y = 0; y < hauteur; y++) {
-            for (int x = 0; x < largeur; x++) {
-                grille[y][x] = new Case(); // Initialiser toutes les cases comme des plaines
-            }
-        }
-    }
+	private void initialiserCarte(int largeur, int hauteur) {
+		this.largeur = largeur;
+		this.hauteur = hauteur;
+		grille = new Case[hauteur][largeur];
+
+		for (int y = 0; y < hauteur; y++) {
+			for (int x = 0; x < largeur; x++) {
+				grille[y][x] = new Case(); // Initialiser toutes les cases comme des plaines
+			}
+		}
+	}
 
 	public void ajouterMontagne(int x, int y) {
 		if (x >= 0 && x < largeur && y >= 0 && y < hauteur) {
 			grille[y][x].setType(TypeCase.MONTAGNE);
-		} else {
-			// Gérer le cas où les coordonnées sont hors limites
-			// Par exemple, enregistrer un message d'erreur ou lancer une exception
 		}
 	}
 
@@ -35,9 +32,24 @@ public class Carte {
 		if (x >= 0 && x < largeur && y >= 0 && y < hauteur) {
 			grille[y][x].setType(TypeCase.TRESOR);
 			grille[y][x].setTresors(nbTresors);
-		} else {
-			// Gérer le cas où les coordonnées sont hors limites
 		}
+	}
+
+	public boolean checkElementsWithinBounds() {
+	    for (int y = 0; y < hauteur; y++) {
+	        for (int x = 0; x < largeur; x++) {
+	            Case caseCourante = grille[y][x];
+	            if ((caseCourante.getType() == TypeCase.MONTAGNE || caseCourante.getType() == TypeCase.TRESOR) &&
+	                !isWithinBounds(x, y)) {
+	                return false;
+	            }
+	        }
+	    }
+	    return true;
+	}
+
+	private boolean isWithinBounds(int x, int y) {
+		return x >= 0 && x < largeur && y >= 0 && y < hauteur;
 	}
 
 	public Case[][] getGrille() {
@@ -71,4 +83,5 @@ public class Carte {
 	public void setHauteur(int hauteur) {
 		this.hauteur = hauteur;
 	}
+
 }

@@ -3,12 +3,15 @@ package main.java.com.carte.tresor.io;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import main.java.com.carte.tresor.model.Carte;
+import main.java.com.carte.tresor.model.carte.Carte;
 
 public class LecteurFichier {
 
@@ -21,23 +24,30 @@ public class LecteurFichier {
 	private static final String NUMBERFORMATEXCEPTION = "Erreur de format dans la ligne : {}. Erreur : {}";
 
 	public static Carte lireFichier(String cheminFichier) throws IOException {
-		try (Stream<String> stream = Files.lines(Paths.get(cheminFichier))) {
-			Carte carte = new Carte(0, 0); // Valeurs initiales par défaut
+		// Cette liste contient uniquement les lignes qui ne commencent pas par la
+		// lettre C
+		List<String> lignes = new ArrayList<>();
+		Carte carte = new Carte(0, 0);
 
-			stream.forEach(ligne -> {
+		try (Stream<String> stream = Files.lines(Paths.get(cheminFichier))) {
+			for (String ligne : stream.collect(Collectors.toList())) {
 				if (ligne.startsWith("C")) {
-					Carte nouvelleCarte = traiterLigneCarte(ligne);
-					carte.setLargeur(nouvelleCarte.getLargeur());
-					carte.setHauteur(nouvelleCarte.getHauteur());
-				} else if (ligne.startsWith("M")) {
+					carte = traiterLigneCarte(ligne);
+				} else if (ligne.startsWith("M") || ligne.startsWith("T")) {
+					lignes.add(ligne);
+				}
+			}
+
+			for (String ligne : lignes) {
+				if (ligne.startsWith("M")) {
 					traiterLigneMontagne(ligne, carte);
 				} else if (ligne.startsWith("T")) {
 					traiterLigneTresor(ligne, carte);
 				}
-			});
-
-			return carte;
+			}
 		}
+
+		return carte;
 	}
 
 	private static Carte traiterLigneCarte(String ligne) {
@@ -57,7 +67,11 @@ public class LecteurFichier {
 			String[] parties = ligne.split(" - ");
 			int x = Integer.parseInt(parties[1]);
 			int y = Integer.parseInt(parties[2]);
-			carte.ajouterMontagne(x, y);
+			if (isWithinMapBounds(x, y, carte)) {
+				carte.ajouterMontagne(x, y);
+			} else {
+				logger.error("Des Éléments en dehors des limites détectés");
+			}
 		} catch (NumberFormatException e) {
 			logger.error(NUMBERFORMATEXCEPTION, ligne, e.getMessage());
 		}
@@ -69,9 +83,18 @@ public class LecteurFichier {
 			int x = Integer.parseInt(parties[1]);
 			int y = Integer.parseInt(parties[2]);
 			int nbTresors = Integer.parseInt(parties[3]);
-			carte.ajouterTresor(x, y, nbTresors);
+			if (isWithinMapBounds(x, y, carte)) {
+				carte.ajouterTresor(x, y, nbTresors);
+			} else {
+				logger.error("Des Éléments en dehors des limites détectés");
+			}
+
 		} catch (NumberFormatException e) {
 			logger.error(NUMBERFORMATEXCEPTION, ligne, e.getMessage());
 		}
+	}
+
+	public static boolean isWithinMapBounds(int x, int y, Carte carte) {
+		return x >= 0 && x < carte.getLargeur() && y >= 0 && y < carte.getHauteur();
 	}
 }

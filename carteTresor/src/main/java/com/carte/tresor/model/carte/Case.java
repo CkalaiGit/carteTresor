@@ -1,4 +1,4 @@
-package main.java.com.carte.tresor.model;
+package main.java.com.carte.tresor.model.carte;
 
 public class Case {
 	

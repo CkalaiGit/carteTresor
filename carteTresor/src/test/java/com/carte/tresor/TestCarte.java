@@ -4,8 +4,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.core.config.Configurator;
 
-import main.java.com.carte.tresor.model.Carte;
-import main.java.com.carte.tresor.model.TypeCase;
+import main.java.com.carte.tresor.model.carte.Carte;
+import main.java.com.carte.tresor.model.carte.TypeCase;
 
 
 public class TestCarte {

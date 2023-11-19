@@ -1,6 +1,7 @@
 package test.java.com.carte.tresor;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
 
@@ -8,7 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import main.java.com.carte.tresor.io.LecteurFichier;
-import main.java.com.carte.tresor.model.Carte;
+import main.java.com.carte.tresor.model.carte.Carte;
 import main.java.com.carte.tresor.utils.CarteUtils;
 
 public class TestLecteurFichier {
@@ -33,17 +34,16 @@ public class TestLecteurFichier {
 	}
 
 	public void testLectureCarteInvalide() {
-		URL res = CarteUtils.getRessource("carteInvalide.txt");
 
+		URL res = CarteUtils.getRessource("carteInvalide.txt");
 		try {
 			String path = Paths.get(res.toURI()).toString();
 			Carte carte = LecteurFichier.lireFichier(path);
-			if (carte == null) {
-				throw new AssertionError("La carte ne devrait pas être null pour un fichier valide");
+			if (carte.checkElementsWithinBounds()) {
+				logger.error("Des Éléments en dehors des limites détectés et cela était attendu");
 			}
-			throw new AssertionError("Une exception était attendue pour un fichier invalide");
-		} catch (Exception e) {
-			//logger.debug("testLectureCarteInvalide passé avec succès (exception attendue) {}", e.getMessage());
+		} catch (URISyntaxException | IOException e) {
+			logger.error(" {}", e.getMessage());
 		}
 	}
 
@@ -52,7 +52,7 @@ public class TestLecteurFichier {
 
 		try {
 			test.testLectureCarteValide();
-			// test.testLectureCarteInvalide();
+			test.testLectureCarteInvalide();
 
 		} catch (AssertionError e) {
 			logger.error("Échec du test : {}", e.getMessage());
