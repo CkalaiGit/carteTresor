@@ -5,9 +5,18 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import main.java.com.carte.tresor.model.Carte;
 
 public class LecteurFichier {
+	
+	private LecteurFichier() {throw new UnsupportedOperationException();}
+	
+	private static final Logger logger = LogManager.getLogger(LecteurFichier.class);
+	
+	private static final String NUMBERFORMATEXCEPTION = "Erreur de format dans la ligne : {}. Erreur : {}";
 
     public static Carte lireFichier(String cheminFichier) throws IOException {
         try (Stream<String> stream = Files.lines(Paths.get(cheminFichier))) {
@@ -36,7 +45,7 @@ public class LecteurFichier {
             int hauteur = Integer.parseInt(parties[2]);
             return new Carte(largeur, hauteur);
         } catch (NumberFormatException e) {
-        	e.printStackTrace(); // TO DO : logger.error("Erreur de format dans la ligne : " + ligne, e);
+        	logger.error(NUMBERFORMATEXCEPTION, ligne, e.getMessage());
             return new Carte(0, 0); // Valeur par défaut ou selon la logique métier
         }
     }
@@ -48,7 +57,7 @@ public class LecteurFichier {
             int y = Integer.parseInt(parties[2]);
             carte.ajouterMontagne(x, y);
         } catch (NumberFormatException e) {
-        	e.printStackTrace();// TO DO : logger.error("Erreur de format dans la ligne : " + ligne, e);
+        	logger.error(NUMBERFORMATEXCEPTION, ligne, e.getMessage());
         }
     }
 
@@ -60,7 +69,7 @@ public class LecteurFichier {
             int nbTresors = Integer.parseInt(parties[3]);
             carte.ajouterTresor(x, y, nbTresors);
         } catch (NumberFormatException e) {
-        	e.printStackTrace();// TO DO : logger.error("Erreur de format dans la ligne : " + ligne, e);
+        	logger.error(NUMBERFORMATEXCEPTION, ligne, e.getMessage());
         }
     }
 }
