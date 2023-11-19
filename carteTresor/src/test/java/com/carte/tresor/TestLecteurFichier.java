@@ -34,14 +34,14 @@ public class TestLecteurFichier {
 	}
 
 	public void testLectureCarteInvalide() {
-
+		
 		URL res = CarteUtils.getRessource("carteInvalide.txt");
 		try {
 			String path = Paths.get(res.toURI()).toString();
 			Carte carte = LecteurFichier.lireFichier(path);
 			if (carte.checkElementsWithinBounds()) {
-				logger.error("Des Éléments en dehors des limites détectés et cela était attendu");
-			}
+	           logger.info("Des Éléments en dehors des limites détectés et cela était attendu");
+	        } 
 		} catch (URISyntaxException | IOException e) {
 			logger.error(" {}", e.getMessage());
 		}
