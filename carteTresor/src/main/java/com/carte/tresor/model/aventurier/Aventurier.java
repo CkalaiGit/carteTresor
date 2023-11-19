@@ -108,5 +108,9 @@ public class Aventurier {
 		this.sequenceMouvements = sequenceMouvements;
 	}
 
+	public void effectuerMouvements() {
+		// TODO Auto-generated method stub
+	}
+
 
 }
