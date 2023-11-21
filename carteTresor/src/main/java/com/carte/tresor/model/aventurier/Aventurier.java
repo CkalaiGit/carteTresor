@@ -1,6 +1,7 @@
 package main.java.com.carte.tresor.model.aventurier;
 
 import main.java.com.carte.tresor.model.carte.Carte;
+import main.java.com.carte.tresor.model.carte.TypeCase;
 
 public class Aventurier {
 	private int x;
@@ -38,8 +39,9 @@ public class Aventurier {
 			break;
 		}
 
-		// On avance que si
-		if (newX >= 0 && newX < carte.getLargeur() && newY >= 0 && newY < carte.getHauteur()) {
+		// On avance que si on sort pas de la carte et qu'on ne fait pas fasse à une montagne
+		if (newX >= 0 && newX < carte.getLargeur() && newY >= 0 && newY < carte.getHauteur()
+				&& carte.getCase(newX, newY).getType() != TypeCase.MONTAGNE) {
 			x = newX;
 			y = newY;
 		}
