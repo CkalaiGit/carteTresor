@@ -16,7 +16,7 @@ public class TestLecteurFichier {
 
 	private static final Logger logger = LogManager.getLogger(TestLecteurFichier.class);
 
-	public void testLectureCarteValide() {
+	private void testLectureCarteValide() {
 
 		URL res = CarteUtils.getRessource("CarteValide.txt");
 

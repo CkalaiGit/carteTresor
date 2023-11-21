@@ -1,5 +1,7 @@
 package main.java.com.carte.tresor.model.aventurier;
 
+import main.java.com.carte.tresor.model.carte.Carte;
+
 public class Aventurier {
 	private int x;
 	private int y;
@@ -17,20 +19,29 @@ public class Aventurier {
 		this.setSequenceMouvements(sequenceMouvements);
 	}
 
-	public void avancer() {
+	public void avancer(Carte carte) {
+		int newX = x;
+		int newY = y;
+
 		switch (orientation) {
 		case NORD:
-			setY(getY() - 1); // Déplacement vers le haut sur la carte
+			setY(newY--); // Déplacement vers le haut sur la carte
 			break;
 		case SUD:
-			setY(getY() + 1); // Déplacement vers le bas sur la carte
+			setY(newY++); // Déplacement vers le bas sur la carte
 			break;
 		case EST:
-			setX(getX() + 1); // Déplacement vers la droite sur la carte
+			setX(newX++); // Déplacement vers la droite sur la carte
 			break;
 		case OUEST:
-			setX(getX() - 1); // Déplacement vers la gauche sur la carte
+			setX(newX--); // Déplacement vers la gauche sur la carte
 			break;
+		}
+
+		// On avance que si
+		if (newX >= 0 && newX < carte.getLargeur() && newY >= 0 && newY < carte.getHauteur()) {
+			x = newX;
+			y = newY;
 		}
 	}
 
@@ -65,6 +76,25 @@ public class Aventurier {
 		case OUEST:
 			orientation = Orientation.NORD;
 			break;
+		}
+	}
+
+	public void effectuerMouvements(String mouvements, Carte carte) {
+		for (char mouvement : mouvements.toCharArray()) {
+			switch (mouvement) {
+			case 'A':
+				avancer(carte);
+				break;
+			case 'G':
+				tournerAGauche();
+				break;
+			case 'D':
+				tournerADroite();
+				break;
+			default:
+				// Gérer les caractères inattendus dans la séquence de mouvements
+				break;
+			}
 		}
 	}
 
@@ -107,10 +137,5 @@ public class Aventurier {
 	public void setSequenceMouvements(String sequenceMouvements) {
 		this.sequenceMouvements = sequenceMouvements;
 	}
-
-	public void effectuerMouvements() {
-		// TODO Auto-generated method stub
-	}
-
 
 }
