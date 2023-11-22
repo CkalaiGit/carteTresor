@@ -111,6 +111,9 @@ public class Aventurier {
 	    if (caseActuelle.getType() == TypeCase.TRESOR && caseActuelle.getTresors() > 0) {
 	        nombreDeTresors++;
 	        caseActuelle.setTresors(caseActuelle.getTresors() - 1); 
+	        if (caseActuelle.getTresors() == 0) {
+	        	caseActuelle.setType(TypeCase.PLAINE);
+	        }
 	    }
 	}
 
