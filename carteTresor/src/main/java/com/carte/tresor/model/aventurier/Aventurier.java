@@ -5,6 +5,7 @@ import main.java.com.carte.tresor.model.carte.Case;
 import main.java.com.carte.tresor.model.carte.TypeCase;
 
 public class Aventurier {
+	
 	private int x;
 	private int y;
 	private int xInitial;
