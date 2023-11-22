@@ -48,6 +48,9 @@ public class Aventurier {
 				&& carte.getCase(newX, newY).getType() != TypeCase.MONTAGNE) {
 			x = newX;
 			y = newY;
+			
+			Case caseActuelle = carte.getCase(x, y);
+	        ramasserTresor(caseActuelle);
 		}
 	}
 
