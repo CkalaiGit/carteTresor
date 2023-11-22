@@ -6,35 +6,77 @@ import org.apache.logging.log4j.Logger;
 import main.java.com.carte.tresor.model.aventurier.Aventurier;
 import main.java.com.carte.tresor.model.aventurier.Orientation;
 import main.java.com.carte.tresor.model.carte.Carte;
+import main.java.com.carte.tresor.model.carte.TypeCase;
 
 public class TestAventurier {
-	
-	private static final Logger logger = LogManager.getLogger(TestAventurier.class);
 
-    public static void main(String[] args) {
-    	
-    	TestAventurier test =  new TestAventurier();
-        
-    	try {
-    		test.testSimulerAventureSansMontagneEtTresor();
-    	}catch (AssertionError | Exception e) {
+	private static final Logger logger = LogManager.getLogger(TestAventurier.class);
+	
+	private static final String MSG_POSITION_SUCCESS = "Position finale de l'aventurier ({}, {}) calculée avec succès : ";
+	private static final String MSG_POSITION_FAILURE = "Mauvaise position de l'aventurier ({}, {}) : ";
+	private static final String AADADA = "AADADA";
+	public static void main(String[] args) {
+
+		TestAventurier test = new TestAventurier();
+
+		try {
+			test.testSimulerAventureSansMontagneEtTresor();
+			test.testSimulerAventureSansTresor();
+			test.testSimulerAventure();
+		} catch (AssertionError | Exception e) {
 			logger.error("Échec du test {} : ", e.getMessage());
 		}
-        
-    }
+
+	}
 
 	public void testSimulerAventureSansMontagneEtTresor() {
-		Carte carte = new Carte(3, 4); 
-        Aventurier aventurier = new Aventurier(1, 1, Orientation.SUD, "AADADA");
-        aventurier.effectuerMouvements(aventurier.getSequenceMouvements(), carte);
+		Carte carte = new Carte(3, 4);
+		Aventurier aventurier = new Aventurier(1, 1, Orientation.SUD, AADADA, 0);
+		aventurier.effectuerMouvements(aventurier.getSequenceMouvements(), carte);
 
-        final int positionFinaleX = aventurier.getX();
-        final int positionFinaleY = aventurier.getY();
-        if (positionFinaleX == 0 && positionFinaleY == 2) {
-        	logger.info("Position finale de l'aventurier ({}, {}) calculée avec succès : " , positionFinaleX , positionFinaleY);
-        } else {
-        	logger.error("Mauvaise position de l'aventurier ({}, {}) : " , positionFinaleX , positionFinaleY);
-        	throw new AssertionError("Le test simulerAventure a échoué");
-        }
+		final int positionFinaleX = aventurier.getX();
+		final int positionFinaleY = aventurier.getY();
+		if (positionFinaleX == 0 && positionFinaleY == 2) {
+			logger.info(MSG_POSITION_SUCCESS, positionFinaleX,
+					positionFinaleY);
+		} else {
+			logger.error(MSG_POSITION_FAILURE, positionFinaleX, positionFinaleY);
+			throw new AssertionError("Le test testSimulerAventureSansMontagneEtTresor a échoué");
+		}
+	}
+
+	public void testSimulerAventureSansTresor() {
+		Carte carte = new Carte(3, 4);
+		Aventurier aventurier = new Aventurier(1, 1, Orientation.SUD, AADADA, 0);
+		carte.getCase(0, 2).setType(TypeCase.MONTAGNE);
+		aventurier.effectuerMouvements(aventurier.getSequenceMouvements(), carte);
+		int positionFinaleX = aventurier.getX();
+		int positionFinaleY = aventurier.getY();
+		if (positionFinaleX == 0 && positionFinaleY == 3) {
+			logger.info(MSG_POSITION_SUCCESS, positionFinaleX,
+					positionFinaleY);
+		} else {
+			logger.error(MSG_POSITION_FAILURE, positionFinaleX, positionFinaleY);
+			throw new AssertionError("Le test testSimulerAventureSansTresor a échoué");
+		}
+	}
+	
+	public void testSimulerAventure() {
+		Carte carte = new Carte(3, 4);
+		Aventurier aventurier = new Aventurier(1, 1, Orientation.SUD, AADADA, 0);
+		carte.getCase(0, 2).setType(TypeCase.MONTAGNE);
+		carte.getCase(1, 2).setType(TypeCase.TRESOR);
+		carte.getCase(1, 2).setTresors(2);
+		aventurier.effectuerMouvements(aventurier.getSequenceMouvements(), carte);
+		int positionFinaleX = aventurier.getX();
+		int positionFinaleY = aventurier.getY();
+		if (positionFinaleX == 0 && positionFinaleY == 3 && carte.getCase(1, 2).getTresors() == 1 ) {
+			logger.info(MSG_POSITION_SUCCESS, positionFinaleX,
+					positionFinaleY);
+			logger.info("nombre de trésor restants = {} ", carte.getCase(1, 2).getTresors());
+		} else {
+			logger.error(MSG_POSITION_FAILURE, positionFinaleX, positionFinaleY);
+			throw new AssertionError("Le test simulerAventure a échoué");
+		}
 	}
 }

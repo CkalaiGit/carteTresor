@@ -1,23 +1,27 @@
 package main.java.com.carte.tresor.model.aventurier;
 
 import main.java.com.carte.tresor.model.carte.Carte;
+import main.java.com.carte.tresor.model.carte.Case;
 import main.java.com.carte.tresor.model.carte.TypeCase;
 
 public class Aventurier {
+	
 	private int x;
 	private int y;
 	private int xInitial;
 	private int yInitial;
 	private Orientation orientation;
 	private String sequenceMouvements;
+	private int nombreDeTresors;
 
-	public Aventurier(int x, int y, Orientation orientation, String sequenceMouvements) {
+	public Aventurier(int x, int y, Orientation orientation, String sequenceMouvements, int nombreDeTresors) {
 		this.setX(x);
 		this.setY(y);
 		this.setxInitial(x);
 		this.setyInitial(y);
 		this.orientation = orientation;
 		this.setSequenceMouvements(sequenceMouvements);
+		this.setNombreDeTresors(nombreDeTresors);
 	}
 
 	public void avancer(Carte carte) {
@@ -44,6 +48,9 @@ public class Aventurier {
 				&& carte.getCase(newX, newY).getType() != TypeCase.MONTAGNE) {
 			x = newX;
 			y = newY;
+			
+			Case caseActuelle = carte.getCase(x, y);
+	        ramasserTresor(caseActuelle);
 		}
 	}
 
@@ -99,6 +106,16 @@ public class Aventurier {
 			}
 		}
 	}
+	
+	public void ramasserTresor(Case caseActuelle) {
+	    if (caseActuelle.getType() == TypeCase.TRESOR && caseActuelle.getTresors() > 0) {
+	        nombreDeTresors++;
+	        caseActuelle.setTresors(caseActuelle.getTresors() - 1); 
+	        if (caseActuelle.getTresors() == 0) {
+	        	caseActuelle.setType(TypeCase.PLAINE);
+	        }
+	    }
+	}
 
 	public int getX() {
 		return x;
@@ -138,6 +155,14 @@ public class Aventurier {
 
 	public void setSequenceMouvements(String sequenceMouvements) {
 		this.sequenceMouvements = sequenceMouvements;
+	}
+
+	public int getNombreDeTresors() {
+		return nombreDeTresors;
+	}
+
+	public void setNombreDeTresors(int nombreDeTresors) {
+		this.nombreDeTresors = nombreDeTresors;
 	}
 
 }
