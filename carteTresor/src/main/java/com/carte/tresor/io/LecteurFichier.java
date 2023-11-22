@@ -24,8 +24,7 @@ public class LecteurFichier {
 	private static final String NUMBERFORMATEXCEPTION = "Erreur de format dans la ligne : {}. Erreur : {}";
 
 	public static Carte lireFichier(String cheminFichier) throws IOException {
-		// Cette liste contient uniquement les lignes qui ne commencent pas par la
-		// lettre C
+		
 		List<String> lignes = new ArrayList<>();
 		Carte carte = new Carte(0, 0);
 
