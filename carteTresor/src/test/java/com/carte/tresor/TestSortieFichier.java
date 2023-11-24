@@ -15,15 +15,14 @@ import main.java.com.carte.tresor.model.carte.Carte;
 public class TestSortieFichier {
 
 	private static final Logger logger = LogManager.getLogger(TestSortieFichier.class);
-
+	
 	public static void main(String[] args) {
-
+		
 		try {
 			TestSortieFichier.testWriteSimulation();
 		} catch (AssertionError | Exception e) {
-			logger.error("Échec du test {} : ", e.getMessage());
+			logger.error("Échec du test testWriteSimulation {} : ", e.getMessage());
 		}
-
 	}
 
 	public static void testWriteSimulation() {
@@ -33,9 +32,7 @@ public class TestSortieFichier {
 		carte.ajouterTresor(1, 3, 3);
 		carte.ajouterTresor(0, 3, 2);
 
-		Aventurier aventurier1 = new Aventurier(1, 1, Orientation.SUD, "AADADA", 0, "aventurier1");
-		// Aventurier aventurier2 = new Aventurier(0, 2, Orientation.EST, "AGADAG", 0,
-		// "aventurier2");
+		Aventurier aventurier1 = new Aventurier(1, 1, Orientation.SUD, "AADADAGGA", 0, "Lara");
 
 		List<Aventurier> aventuriers = Arrays.asList(aventurier1);
 
@@ -45,5 +42,4 @@ public class TestSortieFichier {
 			e.printStackTrace();
 		}
 	}
-
 }

@@ -16,22 +16,25 @@ public class SortieFichier {
 	}
 
 	public static void writeSimulation(Carte carte, List<Aventurier> aventuriers) throws IOException {
-		
+
 		StringBuilder sb = new StringBuilder();
 		sb.append(String.format("C - %d - %d %n", carte.getLargeur(), carte.getHauteur()));
 
 		for (int y = 0; y < carte.getHauteur(); y++) {
 			for (int x = 0; x < carte.getLargeur(); x++) {
-				Case caseActuelle = carte.getCase(x, y);
-				switch (caseActuelle.getType()) {
-				case MONTAGNE:
-					sb.append(String.format("M - %d - %d %n", x, y));
-					break;
-				case TRESOR:
-					sb.append(String.format("T - %d - %d - %d %n", x, y, caseActuelle.getTresors()));
-					break;
-				default:
-					break;
+
+				Case caseXY = carte.getCase(x, y);
+				if (caseXY.getType() != null) {
+					switch (caseXY.getType()) {
+					case MONTAGNE:
+						sb.append(String.format("M - %d - %d %n", x, y));
+						break;
+					case TRESOR:
+						sb.append(String.format("T - %d - %d - %d %n", x, y, caseXY.getTresors()));
+						break;
+					default:
+						break;
+					}
 				}
 			}
 		}
