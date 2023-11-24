@@ -19,13 +19,14 @@ public class TestSortieFichier {
 	public static void main(String[] args) {
 		
 		try {
-			TestSortieFichier.testWriteSimulation();
+			TestSortieFichier test = new TestSortieFichier();
+			test.testWriteSimulation();
 		} catch (AssertionError | Exception e) {
 			logger.error("Échec du test testWriteSimulation {} : ", e.getMessage());
 		}
 	}
 
-	public static void testWriteSimulation() {
+	public void testWriteSimulation() {
 		Carte carte = new Carte(3, 4);
 		carte.ajouterMontagne(1, 0);
 		carte.ajouterMontagne(2, 1);
