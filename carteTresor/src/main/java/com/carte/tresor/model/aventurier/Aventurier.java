@@ -13,8 +13,9 @@ public class Aventurier {
 	private Orientation orientation;
 	private String sequenceMouvements;
 	private int nombreDeTresors;
+	private String name;
 
-	public Aventurier(int x, int y, Orientation orientation, String sequenceMouvements, int nombreDeTresors) {
+	public Aventurier(int x, int y, Orientation orientation, String sequenceMouvements, int nombreDeTresors, String name) {
 		this.setX(x);
 		this.setY(y);
 		this.setxInitial(x);
@@ -22,6 +23,7 @@ public class Aventurier {
 		this.orientation = orientation;
 		this.setSequenceMouvements(sequenceMouvements);
 		this.setNombreDeTresors(nombreDeTresors);
+		this.name = name;
 	}
 
 	public void avancer(Carte carte) {
@@ -163,6 +165,22 @@ public class Aventurier {
 
 	public void setNombreDeTresors(int nombreDeTresors) {
 		this.nombreDeTresors = nombreDeTresors;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public Orientation getOrientation() {
+		return orientation;
+	}
+
+	public void setOrientation(Orientation orientation) {
+		this.orientation = orientation;
 	}
 
 }

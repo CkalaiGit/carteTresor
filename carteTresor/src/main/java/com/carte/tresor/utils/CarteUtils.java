@@ -11,7 +11,7 @@ public class CarteUtils {
 	public static URL getRessource(String fileName) throws AssertionError {
 		URL res = CarteUtils.class.getClassLoader().getResource(fileName);
 		if (res == null) {
-            throw new AssertionError("Le fichier carteValide.txt n'a pas été trouvé");
+            throw new AssertionError("Un fichier d'input n'a pas été trouvé" );
         }
 		return res;
 	}

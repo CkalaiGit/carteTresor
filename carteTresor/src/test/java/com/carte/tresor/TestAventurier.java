@@ -31,7 +31,7 @@ public class TestAventurier {
 
 	public void testSimulerAventureSansMontagneEtTresor() {
 		Carte carte = new Carte(3, 4);
-		Aventurier aventurier = new Aventurier(1, 1, Orientation.SUD, AADADA, 0);
+		Aventurier aventurier = new Aventurier(1, 1, Orientation.SUD, AADADA, 0, null);
 		aventurier.effectuerMouvements(aventurier.getSequenceMouvements(), carte);
 
 		final int positionFinaleX = aventurier.getX();
@@ -47,7 +47,7 @@ public class TestAventurier {
 
 	public void testSimulerAventureSansTresor() {
 		Carte carte = new Carte(3, 4);
-		Aventurier aventurier = new Aventurier(1, 1, Orientation.SUD, AADADA, 0);
+		Aventurier aventurier = new Aventurier(1, 1, Orientation.SUD, AADADA, 0, null);
 		carte.getCase(0, 2).setType(TypeCase.MONTAGNE);
 		aventurier.effectuerMouvements(aventurier.getSequenceMouvements(), carte);
 		int positionFinaleX = aventurier.getX();
@@ -63,7 +63,7 @@ public class TestAventurier {
 	
 	public void testSimulerAventure() {
 		Carte carte = new Carte(3, 4);
-		Aventurier aventurier = new Aventurier(1, 1, Orientation.SUD, AADADA, 0);
+		Aventurier aventurier = new Aventurier(1, 1, Orientation.SUD, AADADA, 0, null);
 		carte.getCase(0, 2).setType(TypeCase.MONTAGNE);
 		carte.getCase(1, 2).setType(TypeCase.TRESOR);
 		carte.getCase(1, 2).setTresors(2);
