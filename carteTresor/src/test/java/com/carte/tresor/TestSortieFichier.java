@@ -38,7 +38,7 @@ public class TestSortieFichier {
 		List<Aventurier> aventuriers = Arrays.asList(aventurier1);
 
 		try {
-			SortieFichier.writeSimulation(carte, aventuriers);
+			SortieFichier.writeSimulation(carte, aventuriers, "TestOutput.txt");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

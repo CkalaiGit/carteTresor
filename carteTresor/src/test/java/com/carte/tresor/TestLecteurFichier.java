@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 
 import main.java.com.carte.tresor.io.LecteurFichier;
 import main.java.com.carte.tresor.model.carte.Carte;
-import main.java.com.carte.tresor.utils.CarteUtils;
+import main.java.com.carte.tresor.utils.Utils;
 
 public class TestLecteurFichier {
 
@@ -18,7 +18,7 @@ public class TestLecteurFichier {
 
 	private void testLectureCarteValide() {
 
-		URL res = CarteUtils.getRessource("CarteValide.txt");
+		URL res = Utils.getRessource("CarteValide.txt");
 
 		try {
 
@@ -35,7 +35,7 @@ public class TestLecteurFichier {
 
 	public void testLectureCarteInvalide() {
 		
-		URL res = CarteUtils.getRessource("carteInvalide.txt");
+		URL res = Utils.getRessource("carteInvalide.txt");
 		try {
 			String path = Paths.get(res.toURI()).toString();
 			Carte carte = LecteurFichier.lireFichier(path);

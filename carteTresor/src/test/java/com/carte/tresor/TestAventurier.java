@@ -1,5 +1,8 @@
 package test.java.com.carte.tresor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -31,8 +34,10 @@ public class TestAventurier {
 
 	public void testSimulerAventureSansMontagneEtTresor() {
 		Carte carte = new Carte(3, 4);
-		Aventurier aventurier = new Aventurier(1, 1, Orientation.SUD, AADADA, 0, null);
-		aventurier.effectuerMouvements(aventurier.getSequenceMouvements(), carte);
+		Aventurier aventurier = new Aventurier(1, 1, Orientation.SUD, AADADA, 0, "toto");
+		List<Aventurier> aventuriers = new ArrayList<>();
+		aventuriers.add(aventurier);
+		aventurier.effectuerMouvements(aventurier.getSequenceMouvements(), carte, Aventurier.initialisePositions(aventuriers));
 
 		final int positionFinaleX = aventurier.getX();
 		final int positionFinaleY = aventurier.getY();
@@ -47,9 +52,11 @@ public class TestAventurier {
 
 	public void testSimulerAventureSansTresor() {
 		Carte carte = new Carte(3, 4);
-		Aventurier aventurier = new Aventurier(1, 1, Orientation.SUD, AADADA, 0, null);
+		Aventurier aventurier = new Aventurier(1, 1, Orientation.SUD, AADADA, 0, "toto");
 		carte.getCase(0, 2).setType(TypeCase.MONTAGNE);
-		aventurier.effectuerMouvements(aventurier.getSequenceMouvements(), carte);
+		List<Aventurier> aventuriers = new ArrayList<>();
+		aventuriers.add(aventurier);
+		aventurier.effectuerMouvements(aventurier.getSequenceMouvements(), carte, Aventurier.initialisePositions(aventuriers));
 		int positionFinaleX = aventurier.getX();
 		int positionFinaleY = aventurier.getY();
 		if (positionFinaleX == 0 && positionFinaleY == 3) {
@@ -63,11 +70,13 @@ public class TestAventurier {
 	
 	public void testSimulerAventure() {
 		Carte carte = new Carte(3, 4);
-		Aventurier aventurier = new Aventurier(1, 1, Orientation.SUD, AADADA, 0, null);
+		Aventurier aventurier = new Aventurier(1, 1, Orientation.SUD, AADADA, 0, "toto");
 		carte.getCase(0, 2).setType(TypeCase.MONTAGNE);
 		carte.getCase(1, 2).setType(TypeCase.TRESOR);
 		carte.getCase(1, 2).setTresors(2);
-		aventurier.effectuerMouvements(aventurier.getSequenceMouvements(), carte);
+		List<Aventurier> aventuriers = new ArrayList<>();
+		aventuriers.add(aventurier);
+		aventurier.effectuerMouvements(aventurier.getSequenceMouvements(), carte, Aventurier.initialisePositions(aventuriers));
 		int positionFinaleX = aventurier.getX();
 		int positionFinaleY = aventurier.getY();
 		if (positionFinaleX == 0 && positionFinaleY == 3 && carte.getCase(1, 2).getTresors() == 1 ) {
