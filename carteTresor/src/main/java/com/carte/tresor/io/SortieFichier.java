@@ -1,13 +1,12 @@
 package main.java.com.carte.tresor.io;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
 import main.java.com.carte.tresor.model.aventurier.Aventurier;
 import main.java.com.carte.tresor.model.carte.Carte;
 import main.java.com.carte.tresor.model.carte.Case;
+import main.java.com.carte.tresor.utils.Utils;
 
 public class SortieFichier {
 
@@ -15,9 +14,13 @@ public class SortieFichier {
 		throw new UnsupportedOperationException();
 	}
 
-	public static void writeSimulation(Carte carte, List<Aventurier> aventuriers) throws IOException {
+	public static void writeSimulation(Carte carte, List<Aventurier> aventuriers, String name) throws IOException {
 
 		StringBuilder sb = new StringBuilder();
+		sb.append("# {C comme Carte} - {Nb. de case en largeur} - {Nb. de case en hauteur} \n");
+		sb.append("# {M comme Montagne} - {Axe horizontal} - {Axe vertical} \n");
+		sb.append("# {T comme Trésor} - {Axe horizontal} - {Axe vertical} - {Nb. de trésors restants} \n");
+		sb.append("# {A comme Aventurier} - {Nom de l’aventurier} - {Axe horizontal} - {Axe vertical} - {Orientation} - {Nb. trésors ramassés} \n");
 		sb.append(String.format("C - %d - %d %n", carte.getLargeur(), carte.getHauteur()));
 
 		for (int y = 0; y < carte.getHauteur(); y++) {
@@ -44,10 +47,7 @@ public class SortieFichier {
 					aventurier.getY(), aventurier.getOrientation(), aventurier.getNombreDeTresors()));
 		}
 
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter("output.txt"))) {
-			writer.write(sb.toString());
-			writer.flush();
-		}
+		Utils.writingOutput(sb, name);
 	}
 
 }
