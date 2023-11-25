@@ -1,11 +1,15 @@
 package main.java.com.carte.tresor.model.aventurier;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import main.java.com.carte.tresor.model.carte.Carte;
 import main.java.com.carte.tresor.model.carte.Case;
 import main.java.com.carte.tresor.model.carte.TypeCase;
 
 public class Aventurier {
-	
+
 	private int x;
 	private int y;
 	private int xInitial;
@@ -15,7 +19,8 @@ public class Aventurier {
 	private int nombreDeTresors;
 	private String name;
 
-	public Aventurier(int x, int y, Orientation orientation, String sequenceMouvements, int nombreDeTresors, String name) {
+	public Aventurier(int x, int y, Orientation orientation, String sequenceMouvements, int nombreDeTresors,
+			String name) {
 		this.setX(x);
 		this.setY(y);
 		this.setxInitial(x);
@@ -24,6 +29,24 @@ public class Aventurier {
 		this.setSequenceMouvements(sequenceMouvements);
 		this.setNombreDeTresors(nombreDeTresors);
 		this.name = name;
+	}
+
+	public static Set<String> initialisePositions(List<Aventurier> aventuriers) {
+
+		Set<String> positionsOccupees = new HashSet<>();
+
+		for (Aventurier aventurier : aventuriers) {
+			positionsOccupees.add(aventurier.getX() + "," + aventurier.getY());
+		}
+
+		return positionsOccupees;
+	}
+
+	public static void effectuerTour(Carte carte, List<Aventurier> aventuriers, Set<String> positionsOccupees) {
+
+		for (Aventurier aventurier : aventuriers) {
+			aventurier.effectuerMouvements(aventurier.getSequenceMouvements(), carte, positionsOccupees);
+		}
 	}
 
 	public void avancer(Carte carte) {
@@ -45,14 +68,15 @@ public class Aventurier {
 			break;
 		}
 
-		// On avance que si on sort pas de la carte et qu'on ne fait pas fasse à une montagne
+		// On avance que si on sort pas de la carte et qu'on ne fait pas fasse à une
+		// montagne
 		if (newX >= 0 && newX < carte.getLargeur() && newY >= 0 && newY < carte.getHauteur()
 				&& carte.getCase(newX, newY).getType() != TypeCase.MONTAGNE) {
 			x = newX;
 			y = newY;
-			
+
 			Case caseActuelle = carte.getCase(x, y);
-	        ramasserTresor(caseActuelle);
+			ramasserTresor(caseActuelle);
 		}
 	}
 
@@ -90,8 +114,10 @@ public class Aventurier {
 		}
 	}
 
-	public void effectuerMouvements(String mouvements, Carte carte) {
+	public void effectuerMouvements(String mouvements, Carte carte, Set<String> positionsOccupees) {
 		for (char mouvement : mouvements.toCharArray()) {
+			int ancienX = x;
+			int ancienY = y;
 			switch (mouvement) {
 			case 'A':
 				avancer(carte);
@@ -103,20 +129,25 @@ public class Aventurier {
 				tournerADroite();
 				break;
 			default:
-				// Gérer les caractères inattendus dans la séquence de mouvements
 				break;
 			}
+
+			if (ancienX != x || ancienY != y) {
+				positionsOccupees.remove(ancienX + "," + ancienY);
+				positionsOccupees.add(x + "," + y);
+			}
 		}
+
 	}
-	
+
 	public void ramasserTresor(Case caseActuelle) {
-	    if (caseActuelle.getType() == TypeCase.TRESOR && caseActuelle.getTresors() > 0) {
-	        nombreDeTresors++;
-	        caseActuelle.setTresors(caseActuelle.getTresors() - 1); 
-	        if (caseActuelle.getTresors() == 0) {
-	        	caseActuelle.setType(TypeCase.PLAINE);
-	        }
-	    }
+		if (caseActuelle.getType() == TypeCase.TRESOR && caseActuelle.getTresors() > 0) {
+			nombreDeTresors++;
+			caseActuelle.setTresors(caseActuelle.getTresors() - 1);
+			if (caseActuelle.getTresors() == 0) {
+				caseActuelle.setType(TypeCase.PLAINE);
+			}
+		}
 	}
 
 	public int getX() {
@@ -174,7 +205,7 @@ public class Aventurier {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public Orientation getOrientation() {
 		return orientation;
 	}
