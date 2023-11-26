@@ -58,16 +58,16 @@ public class Aventurier {
 		historiquePositions.add(x + "," + y);
 
 		switch (orientation) {
-		case NORD:
+		case N:
 			setY(newY--); // Déplacement vers le haut sur la carte
 			break;
-		case SUD:
+		case S:
 			setY(newY++); // Déplacement vers le bas sur la carte
 			break;
-		case EST:
+		case E:
 			setX(newX++); // Déplacement vers la droite sur la carte
 			break;
-		case OUEST:
+		case O:
 			setX(newX--); // Déplacement vers la gauche sur la carte
 			break;
 		}
@@ -85,34 +85,34 @@ public class Aventurier {
 
 	public void tournerAGauche() {
 		switch (orientation) {
-		case NORD:
-			orientation = Orientation.OUEST;
+		case N:
+			orientation = Orientation.O;
 			break;
-		case OUEST:
-			orientation = Orientation.SUD;
+		case O:
+			orientation = Orientation.S;
 			break;
-		case SUD:
-			orientation = Orientation.EST;
+		case S:
+			orientation = Orientation.E;
 			break;
-		case EST:
-			orientation = Orientation.NORD;
+		case E:
+			orientation = Orientation.N;
 			break;
 		}
 	}
 
 	public void tournerADroite() {
 		switch (orientation) {
-		case NORD:
-			orientation = Orientation.EST;
+		case N:
+			orientation = Orientation.E;
 			break;
-		case EST:
-			orientation = Orientation.SUD;
+		case E:
+			orientation = Orientation.S;
 			break;
-		case SUD:
-			orientation = Orientation.OUEST;
+		case S:
+			orientation = Orientation.O;
 			break;
-		case OUEST:
-			orientation = Orientation.NORD;
+		case O:
+			orientation = Orientation.N;
 			break;
 		}
 	}
