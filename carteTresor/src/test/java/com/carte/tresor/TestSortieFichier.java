@@ -33,7 +33,7 @@ public class TestSortieFichier {
 		carte.ajouterTresor(1, 3, 3);
 		carte.ajouterTresor(0, 3, 2);
 
-		Aventurier aventurier1 = new Aventurier(1, 1, Orientation.SUD, "AADADAGGA", 0, "Lara");
+		Aventurier aventurier1 = new Aventurier(1, 1, Orientation.S, "AADADAGGA", 0, "Lara");
 
 		List<Aventurier> aventuriers = Arrays.asList(aventurier1);
 

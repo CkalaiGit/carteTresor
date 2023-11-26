@@ -1,5 +1,6 @@
 package main.java.com.carte.tresor.model.aventurier;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -18,6 +19,7 @@ public class Aventurier {
 	private String sequenceMouvements;
 	private int nombreDeTresors;
 	private String name;
+	private List<String> historiquePositions;
 
 	public Aventurier(int x, int y, Orientation orientation, String sequenceMouvements, int nombreDeTresors,
 			String name) {
@@ -29,6 +31,7 @@ public class Aventurier {
 		this.setSequenceMouvements(sequenceMouvements);
 		this.setNombreDeTresors(nombreDeTresors);
 		this.name = name;
+		this.historiquePositions = new ArrayList<>();
 	}
 
 	public static Set<String> initialisePositions(List<Aventurier> aventuriers) {
@@ -52,24 +55,24 @@ public class Aventurier {
 	public void avancer(Carte carte) {
 		int newX = x;
 		int newY = y;
+		historiquePositions.add(x + "," + y);
 
 		switch (orientation) {
-		case NORD:
+		case N:
 			setY(newY--); // Déplacement vers le haut sur la carte
 			break;
-		case SUD:
+		case S:
 			setY(newY++); // Déplacement vers le bas sur la carte
 			break;
-		case EST:
+		case E:
 			setX(newX++); // Déplacement vers la droite sur la carte
 			break;
-		case OUEST:
+		case O:
 			setX(newX--); // Déplacement vers la gauche sur la carte
 			break;
 		}
 
-		// On avance que si on sort pas de la carte et qu'on ne fait pas fasse à une
-		// montagne
+		// On avance que si on sort pas de la carte et qu'on ne fait pas fasse à une montagne
 		if (newX >= 0 && newX < carte.getLargeur() && newY >= 0 && newY < carte.getHauteur()
 				&& carte.getCase(newX, newY).getType() != TypeCase.MONTAGNE) {
 			x = newX;
@@ -82,34 +85,34 @@ public class Aventurier {
 
 	public void tournerAGauche() {
 		switch (orientation) {
-		case NORD:
-			orientation = Orientation.OUEST;
+		case N:
+			orientation = Orientation.O;
 			break;
-		case OUEST:
-			orientation = Orientation.SUD;
+		case O:
+			orientation = Orientation.S;
 			break;
-		case SUD:
-			orientation = Orientation.EST;
+		case S:
+			orientation = Orientation.E;
 			break;
-		case EST:
-			orientation = Orientation.NORD;
+		case E:
+			orientation = Orientation.N;
 			break;
 		}
 	}
 
 	public void tournerADroite() {
 		switch (orientation) {
-		case NORD:
-			orientation = Orientation.EST;
+		case N:
+			orientation = Orientation.E;
 			break;
-		case EST:
-			orientation = Orientation.SUD;
+		case E:
+			orientation = Orientation.S;
 			break;
-		case SUD:
-			orientation = Orientation.OUEST;
+		case S:
+			orientation = Orientation.O;
 			break;
-		case OUEST:
-			orientation = Orientation.NORD;
+		case O:
+			orientation = Orientation.N;
 			break;
 		}
 	}
@@ -214,4 +217,11 @@ public class Aventurier {
 		this.orientation = orientation;
 	}
 
+	public List<String> getHistoriquePositions() {
+		return historiquePositions;
+	}
+
+	public void setHistoriquePositions(List<String> historiquePositions) {
+		this.historiquePositions = historiquePositions;
+	}
 }

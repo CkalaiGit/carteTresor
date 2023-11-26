@@ -26,6 +26,7 @@ public class TestAventurier {
 			test.testSimulerAventureSansMontagneEtTresor();
 			test.testSimulerAventureSansTresor();
 			test.testSimulerAventure();
+			test.testSimulerAventures();
 		} catch (AssertionError | Exception e) {
 			logger.error("Échec du test {} : ", e.getMessage());
 		}
@@ -34,7 +35,7 @@ public class TestAventurier {
 
 	public void testSimulerAventureSansMontagneEtTresor() {
 		Carte carte = new Carte(3, 4);
-		Aventurier aventurier = new Aventurier(1, 1, Orientation.SUD, AADADA, 0, "toto");
+		Aventurier aventurier = new Aventurier(1, 1, Orientation.S, AADADA, 0, "toto");
 		List<Aventurier> aventuriers = new ArrayList<>();
 		aventuriers.add(aventurier);
 		aventurier.effectuerMouvements(aventurier.getSequenceMouvements(), carte, Aventurier.initialisePositions(aventuriers));
@@ -52,7 +53,7 @@ public class TestAventurier {
 
 	public void testSimulerAventureSansTresor() {
 		Carte carte = new Carte(3, 4);
-		Aventurier aventurier = new Aventurier(1, 1, Orientation.SUD, AADADA, 0, "toto");
+		Aventurier aventurier = new Aventurier(1, 1, Orientation.S, AADADA, 0, null);
 		carte.getCase(0, 2).setType(TypeCase.MONTAGNE);
 		List<Aventurier> aventuriers = new ArrayList<>();
 		aventuriers.add(aventurier);
@@ -70,7 +71,7 @@ public class TestAventurier {
 	
 	public void testSimulerAventure() {
 		Carte carte = new Carte(3, 4);
-		Aventurier aventurier = new Aventurier(1, 1, Orientation.SUD, AADADA, 0, "toto");
+		Aventurier aventurier = new Aventurier(1, 1, Orientation.S, AADADA, 0, null);
 		carte.getCase(0, 2).setType(TypeCase.MONTAGNE);
 		carte.getCase(1, 2).setType(TypeCase.TRESOR);
 		carte.getCase(1, 2).setTresors(2);
@@ -88,4 +89,31 @@ public class TestAventurier {
 			throw new AssertionError("Le test simulerAventure a échoué");
 		}
 	}
+	
+	private void testSimulerAventures() {
+		Carte carte = new Carte(3, 4);
+		Aventurier lara  = new Aventurier(1, 1, Orientation.S, AADADA, 0, "Lara");
+		Aventurier indiana  = new Aventurier(2, 2, Orientation.E, "A", 0, "Indiana");
+		carte.getCase(0, 2).setType(TypeCase.MONTAGNE);
+		carte.getCase(1, 2).setType(TypeCase.TRESOR);
+		carte.getCase(1, 2).setTresors(2);
+		List<Aventurier> aventuriers = new ArrayList<>();
+		aventuriers.add(lara);
+		aventuriers.add(indiana);
+		lara.effectuerMouvements(lara.getSequenceMouvements(), carte, Aventurier.initialisePositions(aventuriers));
+		indiana.effectuerMouvements(indiana.getSequenceMouvements(), carte, Aventurier.initialisePositions(aventuriers));
+		int positionFinaleLaraX = lara.getX();
+		int positionFinaleLaraY = lara.getY();
+		int positionFinaleIndianaX = indiana.getX();
+		int positionFinaleIndianaY = indiana.getY();
+		if (positionFinaleLaraX == 0 && positionFinaleLaraY == 3 && positionFinaleIndianaX == 2 && positionFinaleIndianaY == 2) {
+			logger.info("Le test simulerAventure a réussi");
+		} else {
+			throw new AssertionError("Le test testSimulerAventures a échoué");
+		}
+		
+	}
+	
+	
+	
 }

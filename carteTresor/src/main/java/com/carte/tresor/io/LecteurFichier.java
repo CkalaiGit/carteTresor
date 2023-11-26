@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -11,6 +12,8 @@ import java.util.stream.Stream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import main.java.com.carte.tresor.model.aventurier.Aventurier;
+import main.java.com.carte.tresor.model.aventurier.Orientation;
 import main.java.com.carte.tresor.model.carte.Carte;
 
 public class LecteurFichier {
@@ -47,6 +50,35 @@ public class LecteurFichier {
 		}
 
 		return carte;
+	}
+
+	public static List<Aventurier> traiterLigneAventurier(Carte carte, String cheminFichier) throws IOException {
+
+		List<Aventurier> aventuriers = new ArrayList<>();
+		List<String> lignes = getLines(cheminFichier);
+
+		for (String ligne : lignes) {
+			if (ligne.startsWith("A")) {
+				String[] parties = ligne.split(" - ");
+				String nom = parties[1];
+				int x = Integer.parseInt(parties[2]);
+				int y = Integer.parseInt(parties[3]);
+				Orientation orientation = Orientation.valueOf(parties[4]);
+				String sequenceMouvements = parties[5];
+
+				if (isWithinMapBounds(x, y, carte)) {
+					aventuriers.add(new Aventurier(x, y, orientation, sequenceMouvements, 0, nom));
+				}
+			}
+		}
+
+		return aventuriers;
+	}
+
+	private static List<String> getLines(String cheminFichier) throws IOException {
+		try (Stream<String> stream = Files.lines(Paths.get(cheminFichier))) {
+			return stream.collect(Collectors.toList());
+		}
 	}
 
 	private static Carte traiterLigneCarte(String ligne) {
